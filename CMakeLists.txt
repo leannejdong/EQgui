@@ -58,7 +58,7 @@ FetchContent_MakeAvailable(juce)
 # the formats specified by the FORMATS arguments. This function accepts many optional arguments.
 # Check the readme at `docs/CMake API.md` in the JUCE repo for the full list.
 
-juce_add_plugin("${MyEQ}"
+juce_add_plugin("${PROJECT_NAME}"
     FORMATS AU VST3                             # The formats to build. Valid formats: Standalone Unity VST3 AU AUv3 AAX VST LV2.
                                                 # AU and AUv3 plugins will only be enabled when building on macOS.
     PRODUCT_NAME "3 band EQ"              # The name of the final executable, which can differ from the target name.
@@ -97,7 +97,7 @@ juce_add_plugin("${MyEQ}"
 
 # Set the C++ language standard requirenment for the "shared code" library target.
 # Setting this to PUBLIC ensures that all dependent targets will inherit the specified C++ standard.
-target_compile_features("${MyEQ}" PUBLIC cxx_std_17)
+target_compile_features("${PROJECT_NAME}" PUBLIC cxx_std_17)
 
 # Disable compiler extensions for the project targets (e.g. use -std=c++17 instead of -std=gnu++17).
 get_property(project_targets DIRECTORY "${PROJECT_SOURCE_DIR}" PROPERTY BUILDSYSTEM_TARGETS)
@@ -119,7 +119,7 @@ add_subdirectory(Source)
 # for the correct flag to set here.
 # These definitions will be visible both to your code, and also the JUCE module code.
 
-target_compile_definitions("${MyEQ}"
+target_compile_definitions("${PROJECT_NAME}"
     PUBLIC
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
         JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
@@ -138,7 +138,7 @@ target_compile_definitions("${MyEQ}"
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
 # dependencies are resolved automatically.
 
-target_link_libraries("${MyEQ}"
+target_link_libraries("${PROJECT_NAME}"
     PRIVATE
         # Assets                # If we'd created a binary data target, we'd link to it here
         juce::juce_audio_utils
@@ -158,13 +158,13 @@ set_target_properties(${project_targets} PROPERTIES
 
 # IDEs:  Move the "shared code" source group (main target) out of the "Targets" folder
 #        to the top level.
-set_target_properties("${MyEQ}" PROPERTIES FOLDER "")
+#set_target_properties("${MyEQ}" PROPERTIES FOLDER "")
 
 # IDEs:  Organise source file grouping.
-get_target_property(project_sources "${MyEQ}" SOURCES)
+get_target_property(project_sources "${PROJECT_NAME}" SOURCES)
 
 #   If JuceHeader.h is generated, remove it from the source file list and handle it individually.
-get_target_property(juce_library_code "${MyEQ}" JUCE_GENERATED_SOURCES_DIRECTORY)
+get_target_property(juce_library_code "${PROJECT_NAME}" JUCE_GENERATED_SOURCES_DIRECTORY)
 set(juce_header "${juce_library_code}/JuceHeader.h")
 
 list(REMOVE_ITEM project_sources "${juce_header}")
