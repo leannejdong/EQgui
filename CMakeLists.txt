@@ -22,26 +22,45 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # IDEs:  Create a folder in the IDE with the JUCE Module code.
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects" ON)
 
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Add the JUCE library
+add_subdirectory(JUCE)
+
+# Set Xcode as the generator
+set(CMAKE_XCODE_GENERATE_SCHEME ON)
+
+# Set the Xcode scheme name
+set(CMAKE_XCODE_SCHEME_NAME "3 band EQ")
+
+# Set the Xcode scheme destination
+set(CMAKE_XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2")
+
+# Set the Xcode project settings
+set(XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++17")
+set(XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+set(XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "12.0")
 ### Dependency management ###
 
-include(FetchContent)
+# include(FetchContent)
 
 # Keep dependencies outside of the "Build" directory.
 # This allows to do a clean build of the project without re-downloading or
 # rebuilding the dependencies.
-set(FETCHCONTENT_BASE_DIR "${PROJECT_SOURCE_DIR}/Libs" CACHE PATH "External dependencies path." FORCE)
+# set(FETCHCONTENT_BASE_DIR "${PROJECT_SOURCE_DIR}/Libs" CACHE PATH "External dependencies path." FORCE)
 
-FetchContent_Declare(juce
-    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG        ${LIB_JUCE_TAG}
-    GIT_SHALLOW    TRUE
-    GIT_CONFIG     advice.detachedHead=false    # Disable detached HEAD warning for fetching a specific tag
-    SOURCE_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE"
-    SUBBUILD_DIR   "${FETCHCONTENT_BASE_DIR}/JUCE-Subbuild"
-    BINARY_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE-Build")
+# FetchContent_Declare(juce
+#     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+#     GIT_TAG        ${LIB_JUCE_TAG}
+#     GIT_SHALLOW    TRUE
+#     GIT_CONFIG     advice.detachedHead=false    # Disable detached HEAD warning for fetching a specific tag
+#     SOURCE_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE"
+#     SUBBUILD_DIR   "${FETCHCONTENT_BASE_DIR}/JUCE-Subbuild"
+#     BINARY_DIR     "${FETCHCONTENT_BASE_DIR}/JUCE-Build")
 
-FetchContent_MakeAvailable(juce)
+# FetchContent_MakeAvailable(juce)
 
 
 ### Plugin Project Setup ###
